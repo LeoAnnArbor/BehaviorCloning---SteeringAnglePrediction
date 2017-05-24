@@ -46,15 +46,15 @@ To minimize the model's tendency to overfit to the conditions of the test track,
 
 Original: 
 
-<img src="./images/original.png?raw=true" width="400px”>
+<img src="./images/original.png?raw=true">
 
 Random brightness: 
 
-<img src="./images/randomise.png?raw=true" width="400px”>
+<img src="./images/randomise.png?raw=true">
 
 Horizontal shift:
 
-<img src="./images/jitter.png?raw=true" width="400px”>
+<img src="./images/jitter.png?raw=true">
 
 ### 4. Implementing a Python Generator in Keras
 

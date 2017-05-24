@@ -44,9 +44,14 @@ Images produced by the simulator in training mode are 320x160, and require prepr
 
 To minimize the model's tendency to overfit to the conditions of the test track, images are "jittered" before being fed to the CNN. The jittering consists of a randomized brightness adjustment, and a randomized horizon shift.The effects of the jitter can be observed in the sample below.
 
-<img src="./images/randomise.gif?raw=true">
+Original
+<img src="./images/original.png?raw=true">
 
-<img src="./images/jitter.gif?raw=true">
+Random brightness
+<img src="./images/randomise.png?raw=true">
+
+Horizontal shift
+<img src="./images/jitter.png?raw=true">
 
 ### 4. Implementing a Python Generator in Keras
 

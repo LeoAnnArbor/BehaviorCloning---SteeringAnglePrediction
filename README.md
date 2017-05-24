@@ -19,7 +19,7 @@ This project includes the following files:
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * video.mp4 (a video recording of your vehicle driving autonomously around the track for at least one full lap)
-* report.md summarizing the results
+* README.md summarizing the results
 
 ---
 ## Model Architecture and Training Strategy
@@ -36,7 +36,7 @@ To prevent overfitting, I added dropout layers, L2 regularization and adjust lea
 
 ### 2. Loading and Preprocessing
 
-In training mode, the simulator produces three images per frame while recording corresponding to left-, right-, and center-mounted cameras, each giving a different perspective of the track ahead. The simulator also produces a `csv` file which includes file paths for each of these images, along with the associated steering angle, throttle, brake, and speed for each frame. My algorithm loads the file paths for all three camera views for each frame, along with the angle (adjusted by +0.25 for the left frame and -0.15 for the right), into two numpy arrays
+In training mode, the simulator produces three images per frame while recording corresponding to left-, right-, and center-mounted cameras, each giving a different perspective of the track ahead. The simulator also produces a `csv` file which includes file paths for each of these images, along with the associated steering angle, throttle, brake, and speed for each frame. My algorithm loads the file paths for all three camera views for each frame, along with the angle adjusted by +0.25 for the left frame and -0.15 for the right.
 
 Images produced by the simulator in training mode are 320x160, and require preprocessing prior to being fed to the CNN since it expects input images to be of size 200x66. To achieve this, the bottom 20 pixels and the top 50 pixels are cropped from the image and it is then resized to 200x66. The color space is converted from RGB to YUV as suggested by [nVidia model](https://images.nvidia.com/content/tegra/automotive/images/2016/solutions/pdf/end-to-end-dl-using-px.pdf). Because `drive.py` uses the same CNN model to predict steering angles in real time, it requires the same image preprocessing.
 
@@ -45,13 +45,16 @@ Images produced by the simulator in training mode are 320x160, and require prepr
 To minimize the model's tendency to overfit to the conditions of the test track, images are "jittered" before being fed to the CNN. The jittering consists of a randomized brightness adjustment, and a randomized horizon shift.The effects of the jitter can be observed in the sample below.
 
 Original: 
-<img src="./images/original.png?raw=true" width="400px>
+
+<img src="./images/original.png?raw=true" width="400px”>
 
 Random brightness: 
-<img src="./images/randomise.png?raw=true" width="400px>
+
+<img src="./images/randomise.png?raw=true" width="400px”>
 
 Horizontal shift:
-<img src="./images/jitter.png?raw=true" width="400px>
+
+<img src="./images/jitter.png?raw=true" width="400px”>
 
 ### 4. Implementing a Python Generator in Keras
 
@@ -60,8 +63,8 @@ When working with datasets that have a large quantities of image data, Keras pyt
 
 ## Conclusion and Discussion
 
-This project - along with most every other exercise in machine learning, it would seem - very much reiterated that it really is *all about the data*. Making changes to the model rarely seemed to have quite the impact that a change to the fundamental makeup of the training data typically had. 
+The algorithm successfully predicts the steering angle on autonomous drive mode with both low (`drive.py`) and high (`drive2.py`) drive speeds on test track. But it fails to drive one lap for challenge track. One of the biggest improvements that I can foresee improving the model significantly is to add additional training data. Making changes to the model rarely seemed to have quite the impact that a change to the fundamental makeup of the training data typically had. 
 
-I could easily spend hours upon hours tuning the data and model to perform optimally on both tracks, but to manage my time effectively I chose to conclude my efforts as soon as the model performed satisfactorily on both tracks. I fully plan to revisit this project when time permits.
+Therefore, the best way to improve the model is to collecting additional driving data.  Particularly, Udacity encourages including "recovery" data while training. This means that data should be captured starting from the point of approaching the edge of the track (perhaps nearly missing a turn and almost driving off the track) and recording the process of steering the car back toward the center of the track to give the model a chance to learn recovery behavior. It's easy enough for experienced humans to drive the car reliably around the track, but if the model has never experienced being too close to the edge and then finds itself in just that situation it won't know how to react.
 
-Therefore, the best way to improve the model is to collecting additional driving data. Udacity provides a dataset that can be used alone to produce a working model. However, students are encouraged (and let's admit, it's more fun) to collect our own. Particularly, Udacity encourages including "recovery" data while training. This means that data should be captured starting from the point of approaching the edge of the track (perhaps nearly missing a turn and almost driving off the track) and recording the process of steering the car back toward the center of the track to give the model a chance to learn recovery behavior. It's easy enough for experienced humans to drive the car reliably around the track, but if the model has never experienced being too close to the edge and then finds itself in just that situation it won't know how to react.
+Additionally, the number of data corresponding to zero or low steering angles are significally higher than data for other steering angles, improving the distribution can also improve the training results.  
